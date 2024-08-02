@@ -299,3 +299,62 @@ const fullName = computed({
 })
 </script>
 ```
+
+# 5. Class and Style Bindings
+
+```js
+const isActive = ref(true)
+const hasError = ref(false)
+<div
+  class="static"
+  :class="{ active: isActive, 'text-danger': hasError }"
+></div>
+
+// class Object
+const classObject = reactive({
+  active: true,
+  'text-danger': false
+})
+const isActive = ref(true)
+const error = ref(null)
+
+const classObject = computed(() => ({
+  active: isActive.value && !error.value,
+  'text-danger': error.value && error.value.type === 'fatal'
+}))
+<div :class="classObject"></div>
+
+// Binding to Arrays
+const activeClass = ref('active')
+const errorClass = ref('text-danger')
+<div :class="[activeClass, errorClass]"></div>
+
+<div :class="[isActive ? activeClass : '', errorClass]"></div>
+
+// Component
+<p class="foo bar">Hi!</p>
+<MyComponent class="baz boo" />
+<p class="foo bar baz boo">Hi!</p>
+
+// multiple root elements
+<p :class="$attrs.class">Hi!</p>
+<span>This is a child component</span>
+
+// Binding Inline Styles
+const activeColor = ref('red')
+const fontSize = ref(30)
+<div :style="{ color: activeColor, fontSize: fontSize + 'px' }"></div>
+<div :style="{ 'font-size': fontSize + 'px' }"></div> //  kebab-cased
+
+const styleObject = reactive({
+  color: 'red',
+  fontSize: '30px'
+})
+<div :style="styleObject"></div>
+<div :style="[baseStyles, overridingStyles]"></div>
+
+// Multiple Values
+<div :style="{ display: ['-webkit-box', '-ms-flexbox', 'flex'] }"></div>
+
+
+```
