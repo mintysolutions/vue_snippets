@@ -1,4 +1,4 @@
-# Creating an Application
+# 1. Creating an Application
 
 ```vue
 <div id="app">
@@ -36,7 +36,7 @@ const app2 = createApp({
 app2.mount('#container-2');
 ```
 
-# Template Syntax
+# 2. Template Syntax
 
 ```js
 <p>Using text interpolation: {{ rawHtml }}</p>
@@ -111,7 +111,7 @@ v-html
 ```
 
 
-# Reactivity Fundamentals
+# 3. Reactivity Fundamentals
 ```js
 const count = ref(0)
 
@@ -249,4 +249,53 @@ const object = { id: ref(1) }
 const { id } = object
 {{ id + 1 }}
 
+```
+
+# 4. Computed Properties
+
+```js
+<script setup>
+import { reactive, computed } from 'vue'
+
+const author = reactive({
+  name: 'John Doe',
+  books: [
+    'Vue 2 - Advanced Guide',
+    'Vue 3 - Basic Guide',
+    'Vue 4 - The Mystery'
+  ]
+})
+
+// a computed ref
+const publishedBooksMessage = computed(() => {
+  return author.books.length > 0 ? 'Yes' : 'No'
+})
+</script>
+
+<template>
+  <p>Has published books:</p>
+  <span>{{ publishedBooksMessage }}</span>
+</template>
+
+/**
+ * Writable Computed
+*/
+<script setup>
+import { ref, computed } from 'vue'
+
+const firstName = ref('John')
+const lastName = ref('Doe')
+
+const fullName = computed({
+  // getter
+  get() {
+    return firstName.value + ' ' + lastName.value
+  },
+  // setter
+  set(newValue) {
+    // Note: we are using destructuring assignment syntax here.
+    [firstName.value, lastName.value] = newValue.split(' ')
+  }
+})
+</script>
 ```
