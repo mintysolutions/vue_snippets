@@ -390,7 +390,7 @@ const styleObject = reactive({
 
 ```
 
-# 7. List
+# 7. List Rendering
 ```js
 // indexed
 const items = ref([{ message: 'Foo' }, { message: 'Bar' }])
@@ -464,6 +464,103 @@ function even(numbers) {
   <li v-for="n in even(numbers)">{{ n }}</li>
 </ul>
 
+```
 
+# 8. Event Handling
+
+```js
+<button @click="count++">Add 1</button>
+<p>Count is: {{ count }}</p>
+
+function say(message) {
+  alert(message)
+}
+<button @click="say('hello')">Say hello</button>
+<button @click="say('bye')">Say bye</button>
+
+/**
+ * Accessing Event Argument in Inline Handlers
+*/
+// <!-- using $event special variable -->
+<button @click="warn('Form cannot be submitted yet.', $event)">
+  Submit
+</button>
+// <!-- using inline arrow function -->
+function warn(message, event) {
+  if (event) {
+    event.preventDefault()
+  }
+  alert(message)
+}
+<button @click="(event) => warn('Form cannot be submitted yet.', event)">
+  Submit
+</button>
+
+/**
+ * Event Modifiers
+ */
+
+// .stop
+// .prevent
+// .self
+// .capture
+// .once
+// .passive
+
+// <!-- the click event's propagation will be stopped -->
+<a @click.stop="doThis"></a>
+// <!-- the submit event will no longer reload the page -->
+<form @submit.prevent="onSubmit"></form>
+// <!-- modifiers can be chained -->
+<a @click.stop.prevent="doThat"></a>
+// <!-- just the modifier -->
+<form @submit.prevent></form>
+// <!-- only trigger handler if event.target is the element itself -->
+// <!-- i.e. not from a child element -->
+<div @click.self="doThat">...</div>
+
+/**
+ * Key Modifiers
+ */
+// .enter
+// .tab
+// .delete (captures both "Delete" and "Backspace" keys)
+// .esc
+// .space
+// .up
+// .down
+// .left
+// .right
+// <!-- only call `submit` when the `key` is `Enter` -->
+<input @keyup.enter="submit" />
+<input @keyup.page-down="onPageDown" />
+
+/**
+ * System Modifier Keys
+ */
+// .ctrl
+// .alt
+// .shift
+// .meta
+
+// <!-- Alt + Enter -->
+<input @keyup.alt.enter="clear" />
+// <!-- Ctrl + Click -->
+<div @click.ctrl="doSomething">Do something</div>
+
+// .exact
+// <!-- this will fire even if Alt or Shift is also pressed -->
+<button @click.ctrl="onClick">A</button>
+// <!-- this will only fire when Ctrl and no other keys are pressed -->
+<button @click.ctrl.exact="onCtrlClick">A</button>
+// <!-- this will only fire when no system modifiers are pressed -->
+<button @click.exact="onClick">A</button>
+
+/**
+ * Mouse Button Modifiers
+ */
+// .left
+// .right
+// .middle
 
 ```
