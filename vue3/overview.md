@@ -564,3 +564,97 @@ function warn(message, event) {
 // .middle
 
 ```
+
+# 9.Form Input Bindings
+```js
+// v-model
+<input
+  :value="text"
+  @input="event => text = event.target.value">
+<input v-model="text">
+```
+```js
+<label for="cars">Choose a car:</label>
+<select name="cars" id="cars">
+  <optgroup label="Swedish Cars">
+    <option value="volvo">Volvo</option>
+    <option value="saab">Saab</option>
+  </optgroup>
+  <optgroup label="German Cars">
+    <option value="mercedes">Mercedes</option>
+    <option value="audi">Audi</option>
+  </optgroup>
+</select>
+
+<textarea v-model="message" placeholder="add multiple lines"></textarea>
+```
+```js
+
+// vehicle1=Bike&vehicle2=Car&vehicle3=Boat 
+<input type="checkbox" id="vehicle1" name="vehicle1" value="Bike">
+<label for="vehicle1"> I have a bike</label><br>
+<input type="checkbox" id="vehicle2" name="vehicle2" value="Car">
+<label for="vehicle2"> I have a car</label><br>
+<input type="checkbox" id="vehicle3" name="vehicle3" value="Boat">
+<label for="vehicle3"> I have a boat</label><br><br>
+
+<input
+  type="checkbox"
+  v-model="toggle"
+  true-value="yes"
+  false-value="no" />
+
+//  bind multiple checkboxes to the same array or Set value:
+<div>Checked names: {{ checkedNames }}</div>
+<input type="checkbox" id="jack" value="Jack" v-model="checkedNames" />
+<label for="jack">Jack</label>
+<input type="checkbox" id="john" value="John" v-model="checkedNames" />
+<label for="john">John</label>
+<input type="checkbox" id="mike" value="Mike" v-model="checkedNames" />
+<label for="mike">Mike</label>
+```
+```js
+<input type="radio" id="html" name="fav_language" value="HTML">
+<label for="html">HTML</label><br>
+<input type="radio" id="css" name="fav_language" value="CSS">
+<label for="css">CSS</label><br>
+<input type="radio" id="javascript" name="fav_language" value="JavaScript">
+<label for="javascript">JavaScript</label>
+
+<div>Picked: {{ picked }}</div>
+<input type="radio" id="one" value="One" v-model="picked" />
+<label for="one">One</label>
+<input type="radio" id="two" value="Two" v-model="picked" />
+<label for="two">Two</label>
+```
+```js
+<div>Selected: {{ selected }}</div>
+<select v-model="selected" multiple>
+  <option>A</option>
+  <option>B</option>
+  <option>C</option>
+</select>
+
+const selected = ref('A')
+const options = ref([
+  { text: 'One', value: 'A' },
+  { text: 'Two', value: 'B' },
+  { text: 'Three', value: 'C' }
+])
+<select v-model="selected">
+  <option v-for="option in options" :value="option.value">
+    {{ option.text }}
+  </option>
+</select>
+<div>Selected: {{ selected }}</div>
+```
+
+```js
+// <!-- when the input loses focus or when the user presses Enter. -->
+// synced after "change" instead of "input"
+<input v-model.lazy="msg" />
+// typecast as a number
+<input v-model.number="age" />
+
+<input v-model.trim="msg" />
+```
