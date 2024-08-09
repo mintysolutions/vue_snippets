@@ -389,3 +389,81 @@ const styleObject = reactive({
 <h1 v-show="ok">Hello!</h1>
 
 ```
+
+# 7. List
+```js
+// indexed
+const items = ref([{ message: 'Foo' }, { message: 'Bar' }])
+<li v-for="(item, index) in items">
+  {{ parentMessage }} - {{ index }} - {{ item.message }}
+</li>
+<div v-for="item of items"></div>
+
+// object
+<li v-for="(value, key, index) in myObject">
+  {{ index }}. {{ key }}: {{ value }}
+</li>
+
+<span v-for="n in 10">{{ n }}</span>
+
+// v-for with v-if
+// !!! error!!!
+// When they exist on the same node, v-if has a higher priority than v-for. That means the v-if condition will not have access to variables from the scope of the v-for:
+<li v-for="todo in todos" v-if="!todo.isComplete">
+  {{ todo.name }}
+</li>
+// Working!
+<template v-for="todo in todos">
+  <li v-if="!todo.isComplete">
+    {{ todo.name }}
+  </li>
+</template>
+
+<MyComponent
+  v-for="(item, index) in items"
+  :item="item"
+  :index="index"
+  :key="item.id"
+/>
+
+// Mutation Methods​
+// Vue is able to detect when a reactive array's mutation methods are called and trigger necessary updates. These mutation methods are:
+
+// push()
+// pop()
+// shift()
+// unshift()
+// splice()
+// sort()
+// reverse()
+// `items` is a ref with array value
+
+// non-mutating methods, e.g. filter(), concat() and slice()
+// Vue doesn't re-render the entire list
+items.value = items.value.filter((item) => item.message.match(/Foo/))
+
+
+const numbers = ref([1, 2, 3, 4, 5])
+const evenNumbers = computed(() => {
+  return numbers.value.filter((n) => n % 2 === 0)
+})
+const sortedNumbers = computed(()=>{
+  // - return numbers.reverse()
+  return [...numbers].reverse()
+  return [...numbers].sort()
+})
+
+const sets = ref([
+  [1, 2, 3, 4, 5],
+  [6, 7, 8, 9, 10]
+])
+function even(numbers) {
+  return numbers.filter((number) => number % 2 === 0)
+}
+<ul v-for="numbers in sets">
+  <li v-for="n in even(numbers)">{{ n }}</li>
+</ul>
+
+
+
+```
