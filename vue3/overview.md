@@ -390,7 +390,7 @@ const styleObject = reactive({
 
 ```
 
-# 7. List
+# 7. List Rendering
 ```js
 // indexed
 const items = ref([{ message: 'Foo' }, { message: 'Bar' }])
@@ -464,6 +464,197 @@ function even(numbers) {
   <li v-for="n in even(numbers)">{{ n }}</li>
 </ul>
 
+```
 
+# 8. Event Handling
 
+```js
+<button @click="count++">Add 1</button>
+<p>Count is: {{ count }}</p>
+
+function say(message) {
+  alert(message)
+}
+<button @click="say('hello')">Say hello</button>
+<button @click="say('bye')">Say bye</button>
+
+/**
+ * Accessing Event Argument in Inline Handlers
+*/
+// <!-- using $event special variable -->
+<button @click="warn('Form cannot be submitted yet.', $event)">
+  Submit
+</button>
+// <!-- using inline arrow function -->
+function warn(message, event) {
+  if (event) {
+    event.preventDefault()
+  }
+  alert(message)
+}
+<button @click="(event) => warn('Form cannot be submitted yet.', event)">
+  Submit
+</button>
+
+/**
+ * Event Modifiers
+ */
+
+// .stop
+// .prevent
+// .self
+// .capture
+// .once
+// .passive
+
+// <!-- the click event's propagation will be stopped -->
+<a @click.stop="doThis"></a>
+// <!-- the submit event will no longer reload the page -->
+<form @submit.prevent="onSubmit"></form>
+// <!-- modifiers can be chained -->
+<a @click.stop.prevent="doThat"></a>
+// <!-- just the modifier -->
+<form @submit.prevent></form>
+// <!-- only trigger handler if event.target is the element itself -->
+// <!-- i.e. not from a child element -->
+<div @click.self="doThat">...</div>
+
+/**
+ * Key Modifiers
+ */
+// .enter
+// .tab
+// .delete (captures both "Delete" and "Backspace" keys)
+// .esc
+// .space
+// .up
+// .down
+// .left
+// .right
+// <!-- only call `submit` when the `key` is `Enter` -->
+<input @keyup.enter="submit" />
+<input @keyup.page-down="onPageDown" />
+
+/**
+ * System Modifier Keys
+ */
+// .ctrl
+// .alt
+// .shift
+// .meta
+
+// <!-- Alt + Enter -->
+<input @keyup.alt.enter="clear" />
+// <!-- Ctrl + Click -->
+<div @click.ctrl="doSomething">Do something</div>
+
+// .exact
+// <!-- this will fire even if Alt or Shift is also pressed -->
+<button @click.ctrl="onClick">A</button>
+// <!-- this will only fire when Ctrl and no other keys are pressed -->
+<button @click.ctrl.exact="onCtrlClick">A</button>
+// <!-- this will only fire when no system modifiers are pressed -->
+<button @click.exact="onClick">A</button>
+
+/**
+ * Mouse Button Modifiers
+ */
+// .left
+// .right
+// .middle
+
+```
+
+# 9.Form Input Bindings
+```js
+// v-model
+<input
+  :value="text"
+  @input="event => text = event.target.value">
+<input v-model="text">
+```
+```js
+<label for="cars">Choose a car:</label>
+<select name="cars" id="cars">
+  <optgroup label="Swedish Cars">
+    <option value="volvo">Volvo</option>
+    <option value="saab">Saab</option>
+  </optgroup>
+  <optgroup label="German Cars">
+    <option value="mercedes">Mercedes</option>
+    <option value="audi">Audi</option>
+  </optgroup>
+</select>
+
+<textarea v-model="message" placeholder="add multiple lines"></textarea>
+```
+```js
+
+// vehicle1=Bike&vehicle2=Car&vehicle3=Boat 
+<input type="checkbox" id="vehicle1" name="vehicle1" value="Bike">
+<label for="vehicle1"> I have a bike</label><br>
+<input type="checkbox" id="vehicle2" name="vehicle2" value="Car">
+<label for="vehicle2"> I have a car</label><br>
+<input type="checkbox" id="vehicle3" name="vehicle3" value="Boat">
+<label for="vehicle3"> I have a boat</label><br><br>
+
+<input
+  type="checkbox"
+  v-model="toggle"
+  true-value="yes"
+  false-value="no" />
+
+//  bind multiple checkboxes to the same array or Set value:
+<div>Checked names: {{ checkedNames }}</div>
+<input type="checkbox" id="jack" value="Jack" v-model="checkedNames" />
+<label for="jack">Jack</label>
+<input type="checkbox" id="john" value="John" v-model="checkedNames" />
+<label for="john">John</label>
+<input type="checkbox" id="mike" value="Mike" v-model="checkedNames" />
+<label for="mike">Mike</label>
+```
+```js
+<input type="radio" id="html" name="fav_language" value="HTML">
+<label for="html">HTML</label><br>
+<input type="radio" id="css" name="fav_language" value="CSS">
+<label for="css">CSS</label><br>
+<input type="radio" id="javascript" name="fav_language" value="JavaScript">
+<label for="javascript">JavaScript</label>
+
+<div>Picked: {{ picked }}</div>
+<input type="radio" id="one" value="One" v-model="picked" />
+<label for="one">One</label>
+<input type="radio" id="two" value="Two" v-model="picked" />
+<label for="two">Two</label>
+```
+```js
+<div>Selected: {{ selected }}</div>
+<select v-model="selected" multiple>
+  <option>A</option>
+  <option>B</option>
+  <option>C</option>
+</select>
+
+const selected = ref('A')
+const options = ref([
+  { text: 'One', value: 'A' },
+  { text: 'Two', value: 'B' },
+  { text: 'Three', value: 'C' }
+])
+<select v-model="selected">
+  <option v-for="option in options" :value="option.value">
+    {{ option.text }}
+  </option>
+</select>
+<div>Selected: {{ selected }}</div>
+```
+
+```js
+// <!-- when the input loses focus or when the user presses Enter. -->
+// synced after "change" instead of "input"
+<input v-model.lazy="msg" />
+// typecast as a number
+<input v-model.number="age" />
+
+<input v-model.trim="msg" />
 ```
