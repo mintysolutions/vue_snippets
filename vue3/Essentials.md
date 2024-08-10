@@ -891,3 +891,33 @@ onMounted(() => {
   <Child ref="child" />
 </template>
 ```
+
+# 13. Component
+```vue
+// <!-- BlogPost.vue -->
+<script setup>
+defineProps(['title'])
+defineEmits(['enlarge-text'])
+</script>
+<template>
+  <div class="blog-post">
+    <h4>{{ title }}</h4>
+    <button @click="$emit('enlarge-text')">Enlarge text</button>
+  </div>
+</template>
+```
+```vue
+<!-- access in JS -->
+<script setup>
+const props = defineProps(['title'])
+console.log(props.title)
+const emit = defineEmits(['enlarge-text'])
+emit('enlarge-text')
+</script>
+```
+
+```js
+<!-- Component changes when currentTab changes -->
+<component :is="tabs[currentTab]"></component>
+```
+
