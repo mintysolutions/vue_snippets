@@ -167,3 +167,81 @@ defineProps({
   disabled: [String, Boolean]
 })
 ```
+
+# Component Events
+
+Unlike native DOM events, component emitted events do not bubble. You can only listen to the events emitted by a direct child component.
+
+```js
+<button @click="$emit('increaseBy', 1)">
+  Increase by 1
+</button>
+
+<MyButton @increase-by="(n) => count += n" />
+<MyButton @increase-by="increaseCount" />
+function increaseCount(n) {
+  count.value += n
+}
+
+```
+
+```js
+// in template
+$emit('submit')
+
+// in setup script
+const emit = defineEmits(['inFocus', 'submit'])
+function buttonClick() {
+  emit('submit')
+}
+
+
+export default {
+  emits: ['inFocus', 'submit'],
+  setup(props, ctx) {
+    ctx.emit('submit')
+  }
+}
+export default {
+  emits: ['inFocus', 'submit'],
+  setup(props, { emit }) {
+    emit('submit')
+  }
+}
+```
+```js
+// js
+const emit = defineEmits({
+  submit(payload: { email: string, password: string }) {
+    // return `true` or `false` to indicate
+    // validation pass / fail
+  }
+})
+// ts
+<script setup lang="ts">
+const emit = defineEmits<{
+  (e: 'change', id: number): void
+  (e: 'update', value: string): void
+}>()
+</script>
+```
+## Events Validation
+```js
+const emit = defineEmits({
+  // No validation
+  click: null,
+  // Validate submit event
+  submit: ({ email, password }) => {
+    if (email && password) {
+      return true
+    } else {
+      console.warn('Invalid submit event payload!')
+      return false
+    }
+  }
+})
+
+function submitForm(email, password) {
+  emit('submit', { email, password })
+}
+```
