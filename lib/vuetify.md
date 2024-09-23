@@ -319,11 +319,8 @@ export default {
 <template>
   <v-card flat>
     <v-card-title class="d-flex align-center pe-2">
-      <v-icon icon="mdi-video-input-component"></v-icon> &nbsp; Find a Graphics
-      Card
-
+      <v-icon icon="mdi-video-input-component"></v-icon>&nbsp; Find a Graphics Card
       <v-spacer></v-spacer>
-
       <v-text-field
         v-model="search"
         density="compact"
@@ -337,7 +334,7 @@ export default {
     </v-card-title>
 
     <v-divider></v-divider>
-    <v-data-table v-model:search="search" :items="items">
+    <v-data-table :items="items" v-model:search="search">
       <template v-slot:header.stock>
         <div class="text-end">Stock</div>
       </template>
@@ -376,6 +373,7 @@ export default {
     </v-data-table>
   </v-card>
 </template>
+
 <script>
 export default {
   data() {
